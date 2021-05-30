@@ -3,10 +3,10 @@
         <div class="col-sm-6 title">Crypto List</div>
         <div class="col-sm-6" >
             <span class="entries">Entries Per Page:   </span> 
-            <input type="radio" v-model="pageSize" v-on:input="updateValue($event.target.value)" value="10">10
-            <input type="radio" v-model="pageSize" v-on:input="updateValue($event.target.value)" value="25">25
-            <input type="radio" v-model="pageSize" v-on:input="updateValue($event.target.value)" value="50">50
-            <input type="radio" v-model="pageSize" v-on:input="updateValue($event.target.value)" value="100">100 
+            <input type="radio" v-model="$store.state.pageSize" v-on:input="$store.dispatch('updatePageSize', $event.target.value)" value="10">10
+            <input type="radio" v-model="$store.state.pageSize" v-on:input="$store.dispatch('updatePageSize', $event.target.value)" value="25">25
+            <input type="radio" v-model="$store.state.pageSize" v-on:input="$store.dispatch('updatePageSize', $event.target.value)" value="50">50
+            <input type="radio" v-model="$store.state.pageSize" v-on:input="$store.dispatch('updatePageSize', $event.target.value)" value="100">100 
         </div>
     </div>
 </template>
@@ -14,14 +14,6 @@
 <script>
 export default {
     name: 'Header',
-    props: {
-        pageSize: Number
-    },
-    methods: {
-        updateValue(val) {
-            this.$emit('page-size-change', val);
-        }
-    }
 }
 </script>
 

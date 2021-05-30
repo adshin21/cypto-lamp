@@ -13,8 +13,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr :key="coin.uuid" v-for="(coin, idx) in data.coins">
-              <TableRow :coin="coin" :idx="idx" :countStart="countStart" />
+            <tr :key="coin.uuid" v-for="(coin, idx) in $store.state.data.coins">
+              <TableRow :coin="coin" :idx="idx" />
             </tr>
           </tbody>
         </table>
@@ -27,10 +27,6 @@
 import TableRow from './TableRow';
 export default {
   name: 'Table',
-  props: {
-    data: Object,
-    countStart: Number
-  },
   components: {
     TableRow,
   }

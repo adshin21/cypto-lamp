@@ -1,5 +1,5 @@
 <template>
-    <td>{{ countStart + idx + 1 }}</td>
+    <td>{{ ($store.state.pageNumber - 1) * $store.state.pageSize + idx + 1 }}</td>
     <td><img :src="coin.iconUrl" class="size" :alt="coin.symbol" /></td>
     <td>{{ coin.name }}</td>
     <td>{{ coin.symbol }}</td>

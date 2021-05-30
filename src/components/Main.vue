@@ -1,23 +1,14 @@
 <template>
   <div class="container">
-    <Header 
-      :pageSize="pageSize" 
-      @page-size-change="updatePageSize"
-    />
+    <Header />
     <br />
+    <LastUpdate />
+    <br/>
     <Table 
-      v-if="data.coins && data.coins.length > 0"
-      :data="data"
-      :countStart="(pageNumber - 1) * pageSize"
+      v-if="$store.state.data.coins && $store.state.data.coins.length > 0"
     />
-    <Pagination
-      v-if="data.coins && data.coins.length > 0"
-      :pageNumber="pageNumber"
-      @page-number-change="updatePageNumber"
-    />
-
-    <Error
-      v-if="!data.coins || data.coins.length == 0"
+    <Pagination 
+      v-if="$store.state.data.coins && $store.state.data.coins.length > 0"
     />
   </div>
 </template>
@@ -28,58 +19,23 @@ import _ from 'lodash';
 import Header from './Header';
 import Table from './Table';
 import Pagination from './Pagination';
-import Error from './Error'
+import Error from './Error';
+import LastUpdate from './LastUpdate'
 export default {
   name: 'Main',
-  props: {
-    msg: String
-  },
   components: {
     Header,
     Table,
     Pagination,
-    Error
+    Error,
+    LastUpdate
   },
-  data() {
-    return {
-      data: { },
-      pageSize: 10,
-      pageNumber: 1,
-    }
+  created () {
+    this.$store.dispatch('setData');
+    setInterval(function() {
+        this.$store.dispatch('setData');
+    }.bind(this), 3000)
   },
-  methods: {
-    updatePageSize(val) {
-      this.pageSize = Number(val);
-      this.pageNumber = 1;
-    },
-    updatePageNumber(val) {
-      this.pageNumber += Number(val);
-    },
-    async fetchData() {
-      const res = await fetch(`https://api.coinranking.com/v1/public/coins/?limit=${this.pageSize}&offset=${(this.pageNumber - 1) * this.pageSize}`, {
-        method: 'GET'
-      });
-      const data = await res.json();
-      return data.data;
-    },
-    intervalfun: function() {
-      setInterval(async function() {
-        this.data = await this.fetchData();
-      }.bind(this), 3000)
-    }
-  },
-  async created () {
-    this.data = await this.fetchData();
-    this.intervalfun();
-  },
-  watch: {
-    pageSize: async function() {
-      this.data = await this.fetchData();
-    },
-    pageNumber: async function() {
-      this.data = await this.fetchData();
-    }
-  }
 }
 </script>
 
